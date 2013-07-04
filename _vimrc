@@ -53,6 +53,10 @@ behave mswin
     Bundle 'tComment'
     Bundle 'SuperTab'
     Bundle 'rstacruz/sparkup', {'rtp': 'vim'}
+    Bundle 'kchmck/vim-coffee-script'
+    Bundle 'groenewege/vim-less'
+    Bundle 'elzr/vim-json'
+    Bundle 'tpope/vim-rails'
     Bundle 'EricR86/vim-firefox-autorefresh'
 " }
 
@@ -60,6 +64,9 @@ behave mswin
     " Gundo {
     nnoremap <F5> :GundoToggle<CR>
     " }
+    " Less-vim {
+    nnoremap <leader>l :w <BAR> !lessc % > %:t:r.css<CR><space>
+    "}
 " }
 
 " Map leader {
