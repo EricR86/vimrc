@@ -275,3 +275,9 @@ function! ToggleHex()
 endfunction
 
 " }
+
+" Language specific settings {
+" Ruby {
+autocmd FileType ruby set tabstop=2|set shiftwidth=2
+" }
+" }
