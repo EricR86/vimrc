@@ -37,14 +37,15 @@ behave mswin
 " Install Plugins {
     " For self made scripts check out ~/vimfiles/
     filetype off "required!
-    set rtp+=~/.vim/bundle/vundle/ "places all auto-downloaded plugins/scripts in here
-    call vundle#rc()
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
 
     " let Vundle manage Vundle
     " required! 
     Bundle 'gmarik/vundle'
     Bundle 'Headlights'
-    Bundle 'molokai'
+    Bundle 'tomasr/molokai'
+    Bundle 'altercation/vim-colors-solarized'
     Bundle 'jQuery'
     Bundle 'Gundo'
     Bundle 'repeat.vim'
@@ -58,6 +59,7 @@ behave mswin
     Bundle 'elzr/vim-json'
     Bundle 'tpope/vim-rails'
     Bundle 'EricR86/vim-firefox-autorefresh'
+    call vundle#end() "required
 " }
 
 " Plugin Settings and Bindings {
@@ -76,17 +78,18 @@ let mapleader = ","
 " Quick .vimrc updating {
     " Source the vimrc file after saving it
     if has("autocmd")
-      autocmd bufwritepost _vimrc source $MYVIMRC
+      exec "autocmd bufwritepost " . expand("<sfile>:t") . " source $MYVIMRC"
     endif
 
     " Map opening the .vimrc
-    nmap <leader>` :e $MYVIMRC<CR>
+    exec "nmap <leader>` :e " . expand("<sfile>:p") . "<CR>"
 " }
 
 " Vim UI {
     set background=dark
 	color molokai     	       		" load a colorscheme
-    set guifont=ProFontWindows:h9:cANSI
+    "set guifont=ProFontWindows:h9:cANSI
+    set guifont=Source\ Code\ Pro\ Medium\ 10
 	set tabpagemax=15 				" only show 15 tabs
 	set showmode                   	" display the current mode
 
@@ -112,6 +115,9 @@ let mapleader = ","
     set guioptions-=T               " Remove Toolbar
     "set guioptions-=m               " Remove Menu
     set guioptions-=r               " Remove right hand scrollbar
+    set guioptions-=R               " Remove right hand scrollbar
+    set guioptions-=l               " Remove left hand scrollbar
+    set guioptions-=L               " Remove left hand scrollbar when vertically split
 
 	set backspace=indent,eol,start 	" backspace for dummys
 	set linespace=0 				" No extra spaces between rows
@@ -151,21 +157,21 @@ let mapleader = ","
 	" Setting up the directories {
 		set backup 						" backups are nice ...
         " Moved to function at bottom of the file
-		set backupdir=$HOME\vim\backup  " but not when they clog .
-		set directory=$HOME\vim\swap	" Same for swap files
-		set viewdir=$HOME\vim\views 	" same but for view files
+		set backupdir=$HOME/vim/backup  " but not when they clog .
+		set directory=$HOME/vim/swap	" Same for swap files
+		set viewdir=$HOME/vim/views 	" same but for view files
 		
 		"" Creating directories if they don't exist
-		"silent execute '!mkdir -p $HOME\vim\backup'
-		"silent execute '!mkdir -p $HOME\vim\swap'
-		"silent execute '!mkdir -p $HOME\vim\views'
+		"silent execute '!mkdir -p $HOME/vim/backup'
+		"silent execute '!mkdir -p $HOME/vim/swap'
+		"silent execute '!mkdir -p $HOME/vim/views'
 		au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
 		au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
 	" }
 " }
 
 " Formatting {
-	set nowrap                     	" wrap long lines
+	set nowrap                     	" do not wrap long lines
 	set autoindent                 	" indent at the same level of the previous line
 	set shiftwidth=4               	" use indents of 4 spaces
 	set expandtab 	       		    " Tabs are spaces
