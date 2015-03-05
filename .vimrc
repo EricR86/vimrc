@@ -51,6 +51,8 @@ behave mswin
     Bundle 'repeat.vim'
     Bundle 'surround.vim'
     Bundle 'Lokaltog/vim-easymotion'
+    Bundle 'Lokaltog/powerline'
+    Bundle 'scrooloose/syntastic'
     Bundle 'tComment'
     Bundle 'SuperTab'
     Bundle 'rstacruz/sparkup', {'rtp': 'vim'}
@@ -58,6 +60,8 @@ behave mswin
     Bundle 'groenewege/vim-less'
     Bundle 'elzr/vim-json'
     Bundle 'tpope/vim-rails'
+    Bundle 'tpope/vim-obsession'
+    Bundle 'rking/ag.vim'
     Bundle 'EricR86/vim-firefox-autorefresh'
     call vundle#end() "required
 " }
@@ -69,6 +73,7 @@ behave mswin
     " Less-vim {
     nnoremap <leader>l :w <BAR> !lessc % > %:t:r.css<CR><space>
     "}
+	let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
 " }
 
 " Map leader {
@@ -87,6 +92,11 @@ let mapleader = ","
 
 " Vim UI {
     set background=dark
+    set t_Co=256                    " Set terminal colors to 256
+    if &term =~ 'tmux'              " Tmux specific settings
+        set ttymouse=xterm2
+        set ttyfast
+    endif
 	color molokai     	       		" load a colorscheme
     "set guifont=ProFontWindows:h9:cANSI
     set guifont=Source\ Code\ Pro\ Medium\ 10
@@ -105,7 +115,7 @@ let mapleader = ","
 	endif
 
 	if has('statusline')
-		set laststatus=1           	" show statusline only if there are > 1 windows
+		set laststatus=2           	" show statusline only if there are > 1 windows
 		" Use the commented line if fugitive isn't installed
 		set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P " a statusline, also on steroids
 		"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
