@@ -35,35 +35,95 @@ behave mswin
 " }
 
 " Install Plugins {
-    " For self made scripts check out ~/vimfiles/
-    filetype off "required!
-    set rtp+=~/.vim/bundle/Vundle.vim
-    call vundle#begin()
+    " https://github.com/junegunn/vim-plug
+    call plug#begin('~/.vim/plugged')
 
-    " let Vundle manage Vundle
-    " required! 
-    Bundle 'gmarik/vundle'
-    Bundle 'Headlights'
-    Bundle 'tomasr/molokai'
-    Bundle 'altercation/vim-colors-solarized'
-    Bundle 'jQuery'
-    Bundle 'Gundo'
-    Bundle 'repeat.vim'
-    Bundle 'surround.vim'
-    Bundle 'Lokaltog/vim-easymotion'
-    Bundle 'Lokaltog/powerline'
-    Bundle 'scrooloose/syntastic'
-    Bundle 'tComment'
-    Bundle 'SuperTab'
-    Bundle 'rstacruz/sparkup', {'rtp': 'vim'}
-    Bundle 'kchmck/vim-coffee-script'
-    Bundle 'groenewege/vim-less'
-    Bundle 'elzr/vim-json'
-    Bundle 'tpope/vim-rails'
-    Bundle 'tpope/vim-obsession'
-    Bundle 'rking/ag.vim'
-    Bundle 'EricR86/vim-firefox-autorefresh'
-    call vundle#end() "required
+    " In GUI lists all plugin options and shorcuts
+    "Plug 'Headlights'
+
+    " Color scheme
+    " Plug 'tomasr/molokai'
+    
+    " Color scheme (tailored for neovim)
+    Plug 'freeo/vim-kalisi'
+
+    " Another colorscheme
+    " Plug 'altercation/vim-colors-solarized'
+    
+    " Syntax file for JQuery
+    "Plug 'jQuery', {'for': 'js'}
+    
+    " Visualize undo tree for vim
+    "Plug 'Gundo'
+    
+    " Change surrounding or make surrounds with cs or ys respectively
+    Plug 'tpope/vim-surround'
+
+    " Repeats surround.vim with '.' operator 
+    Plug 'tpope/vim-repeat'
+
+    " Highlights characters to jump to in buffer
+    "Plug 'Lokaltog/vim-easymotion'
+
+    " Statusline enhancement plugin
+    Plug 'powerline/powerline'
+
+    " Syntax checker plugin
+    Plug 'scrooloose/syntastic'
+
+    " Use gc to toggle areas to comment
+    Plug 'tComment'
+
+    " Smarter autocompletion for multiple languages
+    " Requires clang installed and --clang-completer in install options
+    " For various c style languages (including python)
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+
+    " Use tab for smarter autocompletion
+    " Plug 'SuperTab' " Works on windows
+    " Write HTML easier <C-e>,
+    Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
+
+    " Filetype support for cofeescript
+    "Plug 'kchmck/vim-coffee-script', {'for': 'coffeescript'}
+
+    " Filetype support for LESS
+    "Plug 'groenewege/vim-less'
+
+    " Better filetype support for JSON
+    Plug 'elzr/vim-json', {'for': ['json', 'js']}
+
+    " Ruby on rails VIM support
+    "Plug 'tpope/vim-rails', {'for': 'ruby'}
+
+    " Filetype support for Elixir
+    Plug 'elixir-lang/vim-elixir'
+
+    " Better :mksession handling (Session.vim managing)
+    Plug 'tpope/vim-obsession'
+
+    " Use :Ag as a replacement for grep 
+    Plug 'rking/ag.vim'
+
+    " Racket syntax and file type plugin
+    Plug 'wlangstroth/vim-racket'
+
+    " File explorer
+    Plug 'scrooloose/nerdtree'
+
+    " Search and display stuff from arbitrary sources
+    " Plug Shougo/unite.vim
+    
+    " Self made firefox autorefresher
+    "Plug 'EricR86/vim-firefox-autorefresh'
+    
+    if has("nvim")
+        " Elixir neovim plugin bindings and elixir autocompletion
+        Plug 'thinca/vim-ref'
+        Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
+    endif
+
+    call plug#end()
 " }
 
 " Plugin Settings and Bindings {
@@ -73,7 +133,29 @@ behave mswin
     " Less-vim {
     nnoremap <leader>l :w <BAR> !lessc % > %:t:r.css<CR><space>
     "}
-	let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
+    " NERDTree {
+    " close VIM if NERDTree is the only buffer left
+    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    " toggle NERDTree
+    nnoremap <silent> <F2> :NERDTreeToggle<CR>
+    " }
+    " Netrw {
+	" let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
+        let g:netrw_altv=1 " split right instead of left
+    " }
+    " YouCompleteMe {
+        let g:ycm_python_binary_path = '/scratch/arch/Linux-x86_64/opt/python-2.7.11/bin/python'
+    " }
+    " Syntastic {
+        set statusline+=%#warningmsg#
+        set statusline+=%{SyntasticStatuslineFlag()}
+        set statusline+=%*
+
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 1
+        let g:syntastic_check_on_open = 1
+        let g:syntastic_check_on_wq = 0
+    " }
 " }
 
 " Map leader {
@@ -97,7 +179,8 @@ let mapleader = ","
         set ttymouse=xterm2
         set ttyfast
     endif
-	color molokai     	       		" load a colorscheme
+	"color molokai     	       		" load a colorscheme
+	color kalisi     	       		" load a colorscheme
     "set guifont=ProFontWindows:h9:cANSI
     set guifont=Source\ Code\ Pro\ Medium\ 10
 	set tabpagemax=15 				" only show 15 tabs
@@ -106,6 +189,7 @@ let mapleader = ","
 	set cursorline  				" highlight current line
 	hi CursorLine guibg=#ffffff 	" highlight bg color of current line
 	hi CursorColumn guibg=#333333   " highlight cursor
+    hi TermCursor ctermfg=red       " TODO: Fixthis
 
 	if has('cmdline_info')
 		set ruler                  	" show the ruler
@@ -140,12 +224,16 @@ let mapleader = ","
 	set smartcase 					" case sensitive when uc present
 	set wildmenu 					" show list instead of just completing
 	set wildmode=list:longest,full 	" command <Tab> completion, list matches, then longest common part, then all.
-	set whichwrap=b,s,h,l,<,>,[,]	" backspace and cursor keys wrap to
+	"set whichwrap=b,s,h,l,<,>,[,]	" backspace and cursor keys wrap to
+	set whichwrap=b,s,<,>,[,]	" backspace and cursor keys wrap to
 	set scrolljump=5 				" lines to scroll when cursor leaves screen
 	set scrolloff=3 				" minimum lines to keep above and below cursor
 	set foldenable  				" auto fold code
 	"set gdefault					" the /g flag on :s substitutions by default
-
+    
+    " Nvim specific settings
+    "if has('nvim')
+    "endif 
 " }
 
 " General {
@@ -156,7 +244,7 @@ let mapleader = ","
 	" not every vim is compiled with this, use the following line instead
      "autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 	scriptencoding utf-8
-	set autowrite
+	" set autowrite
 	set shortmess+=filmnrxoOtT     	" abbrev. of messages (avoids 'hit enter')
 	"set viewoptions=folds,options,cursor,unix,slash " better unix / windows compatibility
 	set viewoptions=folds,cursor,unix,slash " better unix / windows compatibility
@@ -246,6 +334,9 @@ let mapleader = ","
     nmap ;' :%s//gc<left><left><left>
     vmap ;; :s//g<left><left>
     vmap ;' :s//gc<left><left><left>
+
+    " Open temporary file
+    map <leader>t :exe "e " . tempname()<cr>
 " }
 
 " Hex Editing {
@@ -296,4 +387,13 @@ endfunction
 " Ruby {
 autocmd FileType ruby set tabstop=2|set shiftwidth=2
 " }
+" }
+
+" Neovim specific settings {
+    if has("nvim")
+        " Enable true colors if terminal supports it
+        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+        " Point neovim to a specific python interpreter
+        let g:python_host_prog = '/scratch/arch/Linux-x86_64/opt/python-2.7.11/bin/python'
+    endif 
 " }
