@@ -66,7 +66,10 @@ behave mswin
     "Plug 'Lokaltog/vim-easymotion'
 
     " Statusline enhancement plugin
-    Plug 'powerline/powerline'
+    " Plug 'powerline/powerline' "deprecated (and was never used)
+    
+    " Lightweight statusline enhancement
+    Plug 'vim-airline/vim-airline'
 
     " Syntax checker plugin
     Plug 'scrooloose/syntastic'
@@ -77,7 +80,9 @@ behave mswin
     " Smarter autocompletion for multiple languages
     " Requires clang installed and --clang-completer in install options
     " For various c style languages (including python)
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+    " Enable for all languages? Remove 'for' ? Slows start up
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh', 'for': ['python', 'c', 'cpp'] }
+    autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
 
     " Use tab for smarter autocompletion
     " Plug 'SuperTab' " Works on windows
@@ -147,13 +152,15 @@ behave mswin
         let g:ycm_python_binary_path = '/scratch/arch/Linux-x86_64/opt/python-2.7.11/bin/python'
     " }
     " Syntastic {
+        " These options don't work because of the earlier statusline settings
         set statusline+=%#warningmsg#
         set statusline+=%{SyntasticStatuslineFlag()}
         set statusline+=%*
 
-        let g:syntastic_always_populate_loc_list = 1
-        let g:syntastic_auto_loc_list = 1
         let g:syntastic_check_on_open = 1
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 2
+        let g:syntastic_loc_list_height = 5 "doesn't seem to work
         let g:syntastic_check_on_wq = 0
     " }
 " }
@@ -198,8 +205,9 @@ let mapleader = ","
 									" selected characters/lines in visual mode
 	endif
 
+    " This is not used if airline is installed
 	if has('statusline')
-		set laststatus=2           	" show statusline only if there are > 1 windows
+		set laststatus=2           	" always show status line (this is default)
 		" Use the commented line if fugitive isn't installed
 		set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P " a statusline, also on steroids
 		"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
@@ -245,6 +253,7 @@ let mapleader = ","
      "autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 	scriptencoding utf-8
 	" set autowrite
+    set autoread                " Automatically read modified files outside of vim
 	set shortmess+=filmnrxoOtT     	" abbrev. of messages (avoids 'hit enter')
 	"set viewoptions=folds,options,cursor,unix,slash " better unix / windows compatibility
 	set viewoptions=folds,cursor,unix,slash " better unix / windows compatibility
