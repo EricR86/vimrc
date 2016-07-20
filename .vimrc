@@ -45,7 +45,10 @@ behave mswin
     " Plug 'tomasr/molokai'
     
     " Color scheme (tailored for neovim)
-    Plug 'freeo/vim-kalisi'
+    " Plug 'freeo/vim-kalisi'
+
+    " Color scheme (24 bit for neovim)
+    Plug 'morhetz/gruvbox'
 
     " Another colorscheme
     " Plug 'altercation/vim-colors-solarized'
@@ -71,11 +74,17 @@ behave mswin
     " Lightweight statusline enhancement
     Plug 'vim-airline/vim-airline'
 
+    " Mercurial integration
+    Plug 'ludovicchabant/vim-lawrencium'
+
     " Syntax checker plugin
     Plug 'scrooloose/syntastic'
 
     " Use gc to toggle areas to comment
     Plug 'tComment'
+
+    " Swap windows with <leader>ww
+    Plug 'wesQ3/vim-windowswap'
 
     " Smarter autocompletion for multiple languages
     " Requires clang installed and --clang-completer in install options
@@ -103,6 +112,9 @@ behave mswin
 
     " Filetype support for Elixir
     Plug 'elixir-lang/vim-elixir'
+
+    " Filetype support for Elm
+    Plug 'lambdatoast/elm.vim'
 
     " Better :mksession handling (Session.vim managing)
     Plug 'tpope/vim-obsession'
@@ -148,9 +160,6 @@ behave mswin
 	" let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
         let g:netrw_altv=1 " split right instead of left
     " }
-    " YouCompleteMe {
-        let g:ycm_python_binary_path = '/scratch/arch/Linux-x86_64/opt/python-2.7.11/bin/python'
-    " }
     " Syntastic {
         " These options don't work because of the earlier statusline settings
         set statusline+=%#warningmsg#
@@ -162,6 +171,13 @@ behave mswin
         let g:syntastic_auto_loc_list = 2
         let g:syntastic_loc_list_height = 5 "doesn't seem to work
         let g:syntastic_check_on_wq = 0
+        let g:syntastic_error_symbol = "✗"
+        let g:syntastic_warning_symbol = "⚠"
+    " }
+    " Airline {
+        let g:airline#extensions#branch#enabled = 1
+        let g:airline#extensions#syntastic#enabled = 1
+        let g:airline#extensions#ycm#enabled = 1
     " }
 " }
 
@@ -181,13 +197,20 @@ let mapleader = ","
 
 " Vim UI {
     set background=dark
-    set t_Co=256                    " Set terminal colors to 256
+    " This might overwrite valuable GUI settings
+    " set t_Co=256                    " Set terminal colors to 256
+    " let &t_ZH="\e[3m"
+    " let &t_ZR="\e[23m"
+    "set t_ZH=[3m
+    "set t_ZR=[23m
     if &term =~ 'tmux'              " Tmux specific settings
         set ttymouse=xterm2
         set ttyfast
     endif
 	"color molokai     	       		" load a colorscheme
-	color kalisi     	       		" load a colorscheme
+    let g:gruvbox_italic=1          " if you're using urxvt or gnome-terminal you should try setting let g:gruvbox_italic=1 before colorscheme gruvbox to enforce displaying italics
+    let g:gruvbox_contrast_dark="hard"
+	color gruvbox     	       		" load a colorscheme
     "set guifont=ProFontWindows:h9:cANSI
     set guifont=Source\ Code\ Pro\ Medium\ 10
 	set tabpagemax=15 				" only show 15 tabs
@@ -224,6 +247,7 @@ let mapleader = ","
 	set backspace=indent,eol,start 	" backspace for dummys
 	set linespace=0 				" No extra spaces between rows
 	set nu 							" Line numbers on
+    set relativenumber              " Relative numbers on
 	set showmatch                  	" show matching brackets/parenthesis
 	set incsearch 					" find as you type search
 	set hlsearch 					" highlight search terms
@@ -400,9 +424,5 @@ autocmd FileType ruby set tabstop=2|set shiftwidth=2
 
 " Neovim specific settings {
     if has("nvim")
-        " Enable true colors if terminal supports it
-        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-        " Point neovim to a specific python interpreter
-        let g:python_host_prog = '/scratch/arch/Linux-x86_64/opt/python-2.7.11/bin/python'
     endif 
 " }
