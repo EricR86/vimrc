@@ -38,6 +38,10 @@ behave mswin
     " https://github.com/junegunn/vim-plug
     call plug#begin('~/.vim/plugged')
 
+    " Async completion
+    " TODO: Only enable for Neovim?
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
     " In GUI lists all plugin options and shorcuts
     "Plug 'Headlights'
 
@@ -50,15 +54,6 @@ behave mswin
     " Color scheme (24 bit for neovim)
     Plug 'morhetz/gruvbox'
 
-    " Another colorscheme
-    " Plug 'altercation/vim-colors-solarized'
-    
-    " Syntax file for JQuery
-    "Plug 'jQuery', {'for': 'js'}
-    
-    " Visualize undo tree for vim
-    "Plug 'Gundo'
-    
     " Change surrounding or make surrounds with cs or ys respectively
     Plug 'tpope/vim-surround'
 
@@ -86,15 +81,23 @@ behave mswin
     " Swap windows with <leader>ww
     Plug 'wesQ3/vim-windowswap'
 
+    " Python auto completion
+    Plug 'zchee/deoplete-jedi'
+
+    " Vim syntax auto completion
+    Plug 'Shougo/neco-vim'
+
     " Smarter autocompletion for multiple languages
     " Requires clang installed and --clang-completer in install options
     " For various c style languages (including python)
     " Enable for all languages? Remove 'for' ? Slows start up
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh', 'for': ['python', 'c', 'cpp'] }
-    autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
+    " TODO: Enable for vim installations?
+    " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh', 'for': ['python', 'c', 'cpp'] }
+    " autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
 
     " Use tab for smarter autocompletion
     " Plug 'SuperTab' " Works on windows
+    
     " Write HTML easier <C-e>,
     Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
 
@@ -196,7 +199,6 @@ let mapleader = ","
 " }
 
 " Vim UI {
-    set background=dark
     " This might overwrite valuable GUI settings
     " set t_Co=256                    " Set terminal colors to 256
     " let &t_ZH="\e[3m"
@@ -211,6 +213,9 @@ let mapleader = ","
     let g:gruvbox_italic=1          " if you're using urxvt or gnome-terminal you should try setting let g:gruvbox_italic=1 before colorscheme gruvbox to enforce displaying italics
     let g:gruvbox_contrast_dark="hard"
 	color gruvbox     	       		" load a colorscheme
+
+    set background=dark
+
     "set guifont=ProFontWindows:h9:cANSI
     set guifont=Source\ Code\ Pro\ Medium\ 10
 	set tabpagemax=15 				" only show 15 tabs
@@ -424,5 +429,12 @@ autocmd FileType ruby set tabstop=2|set shiftwidth=2
 
 " Neovim specific settings {
     if has("nvim")
+        " Use deoplete.
+        let g:deoplete#enable_at_startup = 1
+        " Use smartcase.
+        let g:deoplete#enable_smart_case = 1
+        
+        set termguicolors
+
     endif 
 " }
