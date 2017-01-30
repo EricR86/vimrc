@@ -181,6 +181,8 @@ behave mswin
         let g:airline#extensions#branch#enabled = 1
         let g:airline#extensions#syntastic#enabled = 1
         let g:airline#extensions#ycm#enabled = 1
+        " TODO: Fix this to append only the cwd?
+        let g:airline_section_b = '%{getcwd()}'
     " }
 " }
 
@@ -268,9 +270,6 @@ let mapleader = ","
 	set foldenable  				" auto fold code
 	"set gdefault					" the /g flag on :s substitutions by default
     
-    " Nvim specific settings
-    "if has('nvim')
-    "endif 
 " }
 
 " General {
@@ -279,7 +278,7 @@ let mapleader = ","
 	set mouse=a					" automatically enable mouse usage
 	"set autochdir 				" always switch to the current file directory.. 
 	" not every vim is compiled with this, use the following line instead
-     "autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+    " autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 	scriptencoding utf-8
 	" set autowrite
     set autoread                " Automatically read modified files outside of vim
@@ -343,6 +342,9 @@ let mapleader = ","
 	" Shortcuts
 	" Change Working Directory to that of the current file
     cmap cwd lcd %:p:h
+
+    " Change help to open in vertical split
+    cnoremap help vert bo help
 
     " Opening files and directories from current path
     cmap %/ <C-R>=expand("%:p:h")."/"<cr>
@@ -435,6 +437,6 @@ autocmd FileType ruby set tabstop=2|set shiftwidth=2
         let g:deoplete#enable_smart_case = 1
         
         set termguicolors
-
+        set inccommand=nosplit
     endif 
 " }
