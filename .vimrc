@@ -128,6 +128,9 @@ behave mswin
     " Racket syntax and file type plugin
     Plug 'wlangstroth/vim-racket'
 
+    " Rust syntax and file type plugin
+    Plug 'rust-lang/rust.vim'
+
     " File explorer
     Plug 'scrooloose/nerdtree'
 
