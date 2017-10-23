@@ -129,50 +129,12 @@ behave mswin
         " Display function signatures in the command line
         Plug 'Shougo/echodoc.vim'
         
-        " Smarter autocompletion for multiple languages
-        " Requires clang installed and --clang-completer in install options
-        " For various c style languages (including python)
-        " Enable for all languages? Remove 'for' ? Slows start up
-        " TODO: Enable for vim installations?
-        " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh', 'for': ['python', 'c', 'cpp'] }
-        " autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
-
         " Use tab for smarter autocompletion
         " Plug 'SuperTab' " Works on windows
         
         " Write HTML easier <C-e>,
         " Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
         Plug 'mattn/emmet-vim'
-
-        " Filetype support for cofeescript
-        "Plug 'kchmck/vim-coffee-script', {'for': 'coffeescript'}
-
-        " Filetype support for LESS
-        "Plug 'groenewege/vim-less'
-
-        " Better filetype support for JSON
-        " Plug 'elzr/vim-json', {'for': ['json', 'js']}
-
-        " Ruby on rails VIM support
-        "Plug 'tpope/vim-rails', {'for': 'ruby'}
-
-        " Filetype support for Elixir
-        " Plug 'elixir-lang/vim-elixir'
-
-        " Filetype support for Elm
-        " Plug 'lambdatoast/elm.vim'
-
-        " Racket syntax and file type plugin
-        " Plug 'wlangstroth/vim-racket'
-
-        " Rust syntax and file type plugin
-        " Plug 'rust-lang/rust.vim'
-
-        " if has("nvim")
-        "     " Elixir neovim plugin bindings and elixir autocompletion
-        "     Plug 'thinca/vim-ref'
-        "     Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
-        " endif
     " }
 
     call plug#end()
@@ -189,20 +151,6 @@ behave mswin
 	" let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
         let g:netrw_altv=1 " split right instead of left
     " }
-    "" Syntastic {
-    "    " These options don't work because of the earlier statusline settings
-    "    set statusline+=%#warningmsg#
-    "    set statusline+=%{SyntasticStatuslineFlag()}
-    "    set statusline+=%*
-
-    "    let g:syntastic_check_on_open = 1
-    "    let g:syntastic_always_populate_loc_list = 1
-    "    let g:syntastic_auto_loc_list = 2
-    "    let g:syntastic_loc_list_height = 5 "doesn't seem to work
-    "    let g:syntastic_check_on_wq = 0
-    "    let g:syntastic_error_symbol = "✗"
-    "    let g:syntastic_warning_symbol = "⚠"
-    "" }
     " Airline {
         let g:airline#extensions#branch#enabled = 1
         " let g:airline#extensions#syntastic#enabled = 1
