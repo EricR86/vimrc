@@ -38,124 +38,147 @@ behave mswin
     " https://github.com/junegunn/vim-plug
     call plug#begin('~/.vim/plugged')
 
-    " Async completion
-    " TODO: Only enable for Neovim?
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    " General {
+        
+        " Async completion
+        " TODO: Only enable for Neovim?
+        " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        Plug 'roxma/nvim-completion-manager'
 
-    " In GUI lists all plugin options and shorcuts
-    "Plug 'Headlights'
+        " Language server protocol framework support
+        Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 
-    " Color scheme
-    " Plug 'tomasr/molokai'
+        " Change surrounding or make surrounds with cs or ys respectively
+        Plug 'tpope/vim-surround'
+
+        " Repeats surround.vim with '.' operator 
+        Plug 'tpope/vim-repeat'
+
+        " Common pairs of mappings ([b and ]b to move between buffers)
+        Plug 'tpope/vim-unimpaired'
+
+        " Swap windows with <leader>ww
+        Plug 'wesQ3/vim-windowswap'
+
+        " File explorer
+        Plug 'scrooloose/nerdtree'
+
+        " Better :mksession handling (Session.vim managing)
+        " Plug 'tpope/vim-obsession'
+
+        " Distraction free writing with :Goyo
+        Plug 'junegunn/goyo.vim'
+
+        " In GUI lists all plugin options and shorcuts
+        " Plug 'Headlights'
     
-    " Color scheme (tailored for neovim)
-    " Plug 'freeo/vim-kalisi'
+        " Lightweight statusline enhancement
+        Plug 'vim-airline/vim-airline'
 
-    " Color scheme (24 bit for neovim)
-    Plug 'morhetz/gruvbox'
-
-    " Change surrounding or make surrounds with cs or ys respectively
-    Plug 'tpope/vim-surround'
-
-    " Repeats surround.vim with '.' operator 
-    Plug 'tpope/vim-repeat'
-
-    " Highlights characters to jump to in buffer
-    "Plug 'Lokaltog/vim-easymotion'
-
-    " Statusline enhancement plugin
-    " Plug 'powerline/powerline' "deprecated (and was never used)
+    " }
     
-    " Lightweight statusline enhancement
-    Plug 'vim-airline/vim-airline'
+    " Search {
+        " Use :Ag as a replacement for grep 
+        Plug 'rking/ag.vim'
+        " Fuzzy finder intergration
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        Plug 'junegunn/fzf.vim'
+    " }
 
-    " Mercurial integration
-    Plug 'ludovicchabant/vim-lawrencium'
+    " Color scheme {
+        " Plug 'tomasr/molokai'
+        
+        " Color scheme (tailored for neovim)
+        " Plug 'freeo/vim-kalisi'
+        
+        " Color scheme (24 bit for neovim)
+        Plug 'morhetz/gruvbox'
 
-    " Syntax checker plugin
-    Plug 'scrooloose/syntastic'
+        " Highlights characters to jump to in buffer
+        " Plug 'Lokaltog/vim-easymotion'
+    " }
 
-    " Use gc to toggle areas to comment
-    Plug 'tComment'
+    " SCM {
+        " Mercurial integration
+        Plug 'ludovicchabant/vim-lawrencium'
+    " }
 
-    " Swap windows with <leader>ww
-    Plug 'wesQ3/vim-windowswap'
+    " Language {
+        " Syntax checker plugin
+        " Plug 'scrooloose/syntastic'
 
-    " Python auto completion
-    Plug 'zchee/deoplete-jedi'
+        " Asyncrhonous lint checking
+        Plug 'w0rp/ale'
 
-    " Vim syntax auto completion
-    Plug 'Shougo/neco-vim'
+        " Use gc to toggle areas to comment
+        " Plug 'tomtom/tcomment_vim'
+        Plug 'tpope/vim-commentary'
 
-    " Smarter autocompletion for multiple languages
-    " Requires clang installed and --clang-completer in install options
-    " For various c style languages (including python)
-    " Enable for all languages? Remove 'for' ? Slows start up
-    " TODO: Enable for vim installations?
-    " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh', 'for': ['python', 'c', 'cpp'] }
-    " autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
+        " General language autocompletion
+        Plug 'shougo/deoplete.nvim'
+        " Add syntax files as a deoplete completion source
+        Plug 'shougo/neco-syntax'
+        " Python auto completion
+        Plug 'davidhalter/jedi'
+        " Python auto completion with deoplete
+        Plug 'zchee/deoplete-jedi'
 
-    " Use tab for smarter autocompletion
-    " Plug 'SuperTab' " Works on windows
-    
-    " Write HTML easier <C-e>,
-    Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
+        " Syntax and filetype plugins for most languages
+        Plug 'sheerun/vim-polyglot'
 
-    " Filetype support for cofeescript
-    "Plug 'kchmck/vim-coffee-script', {'for': 'coffeescript'}
+        " Display function signatures in the command line
+        Plug 'Shougo/echodoc.vim'
+        
+        " Smarter autocompletion for multiple languages
+        " Requires clang installed and --clang-completer in install options
+        " For various c style languages (including python)
+        " Enable for all languages? Remove 'for' ? Slows start up
+        " TODO: Enable for vim installations?
+        " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh', 'for': ['python', 'c', 'cpp'] }
+        " autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
 
-    " Filetype support for LESS
-    "Plug 'groenewege/vim-less'
+        " Use tab for smarter autocompletion
+        " Plug 'SuperTab' " Works on windows
+        
+        " Write HTML easier <C-e>,
+        " Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
+        Plug 'mattn/emmet-vim'
 
-    " Better filetype support for JSON
-    Plug 'elzr/vim-json', {'for': ['json', 'js']}
+        " Filetype support for cofeescript
+        "Plug 'kchmck/vim-coffee-script', {'for': 'coffeescript'}
 
-    " Ruby on rails VIM support
-    "Plug 'tpope/vim-rails', {'for': 'ruby'}
+        " Filetype support for LESS
+        "Plug 'groenewege/vim-less'
 
-    " Filetype support for Elixir
-    Plug 'elixir-lang/vim-elixir'
+        " Better filetype support for JSON
+        " Plug 'elzr/vim-json', {'for': ['json', 'js']}
 
-    " Filetype support for Elm
-    Plug 'lambdatoast/elm.vim'
+        " Ruby on rails VIM support
+        "Plug 'tpope/vim-rails', {'for': 'ruby'}
 
-    " Better :mksession handling (Session.vim managing)
-    Plug 'tpope/vim-obsession'
+        " Filetype support for Elixir
+        " Plug 'elixir-lang/vim-elixir'
 
-    " Use :Ag as a replacement for grep 
-    Plug 'rking/ag.vim'
+        " Filetype support for Elm
+        " Plug 'lambdatoast/elm.vim'
 
-    " Racket syntax and file type plugin
-    Plug 'wlangstroth/vim-racket'
+        " Racket syntax and file type plugin
+        " Plug 'wlangstroth/vim-racket'
 
-    " Rust syntax and file type plugin
-    Plug 'rust-lang/rust.vim'
+        " Rust syntax and file type plugin
+        " Plug 'rust-lang/rust.vim'
 
-    " File explorer
-    Plug 'scrooloose/nerdtree'
-
-    " Search and display stuff from arbitrary sources
-    " Plug Shougo/unite.vim
-    
-    " Self made firefox autorefresher
-    "Plug 'EricR86/vim-firefox-autorefresh'
-    
-    if has("nvim")
-        " Elixir neovim plugin bindings and elixir autocompletion
-        Plug 'thinca/vim-ref'
-        Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
-    endif
+        " if has("nvim")
+        "     " Elixir neovim plugin bindings and elixir autocompletion
+        "     Plug 'thinca/vim-ref'
+        "     Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
+        " endif
+    " }
 
     call plug#end()
 " }
 
 " Plugin Settings and Bindings {
-    " Gundo {
-    nnoremap <F5> :GundoToggle<CR>
-    " }
-    " Less-vim {
-    nnoremap <leader>l :w <BAR> !lessc % > %:t:r.css<CR><space>
-    "}
     " NERDTree {
     " close VIM if NERDTree is the only buffer left
     autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -166,26 +189,34 @@ behave mswin
 	" let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
         let g:netrw_altv=1 " split right instead of left
     " }
-    " Syntastic {
-        " These options don't work because of the earlier statusline settings
-        set statusline+=%#warningmsg#
-        set statusline+=%{SyntasticStatuslineFlag()}
-        set statusline+=%*
+    "" Syntastic {
+    "    " These options don't work because of the earlier statusline settings
+    "    set statusline+=%#warningmsg#
+    "    set statusline+=%{SyntasticStatuslineFlag()}
+    "    set statusline+=%*
 
-        let g:syntastic_check_on_open = 1
-        let g:syntastic_always_populate_loc_list = 1
-        let g:syntastic_auto_loc_list = 2
-        let g:syntastic_loc_list_height = 5 "doesn't seem to work
-        let g:syntastic_check_on_wq = 0
-        let g:syntastic_error_symbol = "✗"
-        let g:syntastic_warning_symbol = "⚠"
-    " }
+    "    let g:syntastic_check_on_open = 1
+    "    let g:syntastic_always_populate_loc_list = 1
+    "    let g:syntastic_auto_loc_list = 2
+    "    let g:syntastic_loc_list_height = 5 "doesn't seem to work
+    "    let g:syntastic_check_on_wq = 0
+    "    let g:syntastic_error_symbol = "✗"
+    "    let g:syntastic_warning_symbol = "⚠"
+    "" }
     " Airline {
         let g:airline#extensions#branch#enabled = 1
-        let g:airline#extensions#syntastic#enabled = 1
-        let g:airline#extensions#ycm#enabled = 1
+        " let g:airline#extensions#syntastic#enabled = 1
+        " let g:airline#extensions#ycm#enabled = 1
+        let g:airline#extensions#ale#enabled = 1
         " TODO: Fix this to append only the cwd?
         let g:airline_section_b = '%{getcwd()}'
+    " }
+
+    " FZF {
+        " Redefine the Find command to use rg and options
+        if executable('rg')
+            command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --follow --color "always" '.shellescape(<q-args>), 1, <bang>0)
+        endif
     " }
 " }
 
@@ -231,20 +262,21 @@ let mapleader = ","
 	hi CursorColumn guibg=#333333   " highlight cursor
     hi TermCursor ctermfg=red       " TODO: Fixthis
 
-	if has('cmdline_info')
-		set ruler                  	" show the ruler
-		set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
-		set showcmd                	" show partial commands in status line and
-									" selected characters/lines in visual mode
-	endif
+    " Airline takes care of these settings
+	" if has('cmdline_info')
+	" 	set ruler                  	" show the ruler
+	" 	set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
+	" 	set showcmd                	" show partial commands in status line and
+	" 								" selected characters/lines in visual mode
+	" endif
 
     " This is not used if airline is installed
-	if has('statusline')
-		set laststatus=2           	" always show status line (this is default)
-		" Use the commented line if fugitive isn't installed
-		set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P " a statusline, also on steroids
-		"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-	endif
+	"if has('statusline')
+	"	set laststatus=2           	" always show status line (this is default)
+	"	" Use the commented line if fugitive isn't installed
+	"	set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P " a statusline, also on steroids
+	"	"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+	"endif
 
     " Remove GUI menus
     set guioptions-=T               " Remove Toolbar
@@ -286,11 +318,25 @@ let mapleader = ","
 	" set autowrite
     set autoread                " Automatically read modified files outside of vim
 	set shortmess+=filmnrxoOtT     	" abbrev. of messages (avoids 'hit enter')
-	"set viewoptions=folds,options,cursor,unix,slash " better unix / windows compatibility
-	set viewoptions=folds,cursor,unix,slash " better unix / windows compatibility
-	set virtualedit=onemore 	   	" allow for cursor beyond last character
+
+    " Views {
+        " XXX: Typically, having 'options' set in viewoptions is a bad thing
+        "set viewoptions=folds,options,cursor,unix,slash " better unix / windows compatibility
+        " Redundant if views are not used (commented out below)
+        " XXX: It seems no matter what, the 'lcd' setting is saved regardless
+        " what option is set for views
+        set viewoptions=folds,cursor,unix,slash " better unix / windows compatibility
+        " au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
+        " au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
+    " }
+
+	" set virtualedit=onemore 	   	" allow for cursor beyond last character
 	set history=1000  				" Store a ton of history (default is 20)
 	" set spell 		 	     	" spell checking on
+    set hidden                      " buffers become hidden when navigating away and won't complain about modifications
+    if executable('rg')
+        set grepprg=rg\ --vimgrep       " set the grep program to use ripgrep instead
+    endif
 	
 	" Setting up the directories {
 		set backup 						" backups are nice ...
@@ -303,18 +349,16 @@ let mapleader = ","
 		"silent execute '!mkdir -p $HOME/vim/backup'
 		"silent execute '!mkdir -p $HOME/vim/swap'
 		"silent execute '!mkdir -p $HOME/vim/views'
-		au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
-		au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
 	" }
 " }
 
 " Formatting {
 	set nowrap                     	" do not wrap long lines
 	set autoindent                 	" indent at the same level of the previous line
-	set shiftwidth=4               	" use indents of 4 spaces
+	set shiftwidth=4               	" use indents of 4 spaces (used for >>, <<, autoindent, etc)
 	set expandtab 	       		    " Tabs are spaces
     set smarttab                    " Tabs are tabs after a leading tab
-	set tabstop=4 					" an indentation every four columns
+	set tabstop=4 					" an indentation every four columns (# of spaces counted for tab)
     set textwidth=79                "Auto wrap when inserting after 80 columns (self-imposed)
 	"set matchpairs+=<:>            	" match, to be used with % 
 	set pastetoggle=<F12>          	" pastetoggle (sane indentation on pastes)
@@ -344,10 +388,10 @@ let mapleader = ","
 
 	" Shortcuts
 	" Change Working Directory to that of the current file
-    cmap cwd lcd %:p:h
+    " cmap cwd lcd %:p:h
 
     " Change help to open in vertical split
-    cnoremap help vert bo help
+    " cnoremap help vert bo help
 
     " Opening files and directories from current path
     cmap %/ <C-R>=expand("%:p:h")."/"<cr>
@@ -373,10 +417,10 @@ let mapleader = ","
     map <leader>m <C-w>_<C-w>\|
 
     "Map for quick replacement
-    nmap ;; :%s//g<left><left>
-    nmap ;' :%s//gc<left><left><left>
-    vmap ;; :s//g<left><left>
-    vmap ;' :s//gc<left><left><left>
+    " nmap ;; :%s//g<left><left>
+    " nmap ;' :%s//gc<left><left><left>
+    " vmap ;; :s//g<left><left>
+    " vmap ;' :s//gc<left><left><left>
 
     " Open temporary file
     map <leader>t :exe "e " . tempname()<cr>
@@ -426,20 +470,28 @@ endfunction
 
 " }
 
-" Language specific settings {
-" Ruby {
-autocmd FileType ruby set tabstop=2|set shiftwidth=2
-" }
-" }
-
 " Neovim specific settings {
     if has("nvim")
         " Use deoplete.
         let g:deoplete#enable_at_startup = 1
         " Use smartcase.
         let g:deoplete#enable_smart_case = 1
+
+        " #|TermOpen|		when a terminal buffer is starting
+        " TODO: Fix this
+        augroup neovimrc
+            " Remove all neovimrc autocmds (useful when resourcing)
+            autocmd!
+            " Remove line numbers from terminal buffers
+            autocmd TermOpen * setlocal nonumber
+            autocmd TermOpen * setlocal norelativenumber
+        augroup END
         
         set termguicolors
+        " set guicursor=a
+		" set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+		"   \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+		"   \,sm:block-blinkwait175-blinkoff150-blinkon175
         set inccommand=nosplit
     endif 
 " }
