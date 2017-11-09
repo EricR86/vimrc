@@ -7,31 +7,6 @@ set nocompatible
 "source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
-
-" set diffexpr=MyDiff()
-" function MyDiff()
-"   let opt = '-a --binary '
-"   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-"   if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-"   let arg1 = v:fname_in
-"   if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-"   let arg2 = v:fname_new
-"   if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-"   let arg3 = v:fname_out
-"   if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-"   let eq = ''
-"   if $VIMRUNTIME =~ ' '
-"     if &sh =~ '\<cmd'
-"       let cmd = '""' . $VIMRUNTIME . '\diff"'
-"       let eq = '"'
-"     else
-"       let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-"     endif
-"   else
-"     let cmd = $VIMRUNTIME . '\diff'
-"   endif
-"   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-" endfunction
 " }
 
 " Install Plugins {
@@ -136,6 +111,7 @@ behave mswin
         
         " Write HTML easier <C-e>,
         " Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
+        " Write HTML easier <C-y>,
         Plug 'mattn/emmet-vim'
     " }
 
@@ -150,7 +126,7 @@ behave mswin
     nnoremap <silent> <F2> :NERDTreeToggle<CR>
     " }
     " Netrw {
-	" let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
+    " let g:netrw_list_cmd=" ssh -q USEPORT HOSTNAME ls -Fa"
         let g:netrw_altv=1 " split right instead of left
     " }
     " Airline {
@@ -189,85 +165,83 @@ let mapleader = ","
     " set t_Co=256                    " Set terminal colors to 256
     " let &t_ZH="\e[3m"
     " let &t_ZR="\e[23m"
-    "set t_ZH=[3m
-    "set t_ZR=[23m
+    " set t_ZH=[3m
+    " set t_ZR=[23m
     if &term =~ 'tmux'              " Tmux specific settings
         set ttymouse=xterm2
         set ttyfast
     endif
-	"color molokai     	       		" load a colorscheme
+    "color molokai                  " load a colorscheme
     let g:gruvbox_italic=1          " if you're using urxvt or gnome-terminal you should try setting let g:gruvbox_italic=1 before colorscheme gruvbox to enforce displaying italics
     let g:gruvbox_contrast_dark="hard"
-	color gruvbox     	       		" load a colorscheme
+    color gruvbox                   " load a colorscheme
 
     set background=dark
 
     "set guifont=ProFontWindows:h9:cANSI
     set guifont=Source\ Code\ Pro\ Medium\ 10
-	set tabpagemax=15 				" only show 15 tabs
-	set showmode                   	" display the current mode
+    set tabpagemax=15               " only show 15 tabs
+    set showmode                    " display the current mode
 
-	set cursorline  				" highlight current line
-	hi CursorLine guibg=#ffffff 	" highlight bg color of current line
-	hi CursorColumn guibg=#333333   " highlight cursor
+    set cursorline                  " highlight current line
+
+    hi CursorLine guibg=#ffffff     " highlight bg color of current line
+    hi CursorColumn guibg=#333333   " highlight cursor
     hi TermCursor ctermfg=red       " TODO: Fixthis
 
     " Airline takes care of these settings
-	" if has('cmdline_info')
-	" 	set ruler                  	" show the ruler
-	" 	set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
-	" 	set showcmd                	" show partial commands in status line and
-	" 								" selected characters/lines in visual mode
-	" endif
+    " if has('cmdline_info')
+    "     set ruler                   " show the ruler
+    "     set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
+    "     set showcmd                 " show partial commands in status line and
+    "                                 " selected characters/lines in visual mode
+    " endif
 
     " This is not used if airline is installed
-	"if has('statusline')
-	"	set laststatus=2           	" always show status line (this is default)
-	"	" Use the commented line if fugitive isn't installed
-	"	set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P " a statusline, also on steroids
-	"	"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-	"endif
+    "if has('statusline')
+    "    set laststatus=2             " always show status line (this is default)
+    "    " Use the commented line if fugitive isn't installed
+    "    set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P " a statusline, also on steroids
+    "    "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+    "endif
 
     " Remove GUI menus
     set guioptions-=T               " Remove Toolbar
-    "set guioptions-=m               " Remove Menu
+    "set guioptions-=m              " Remove Menu
     set guioptions-=r               " Remove right hand scrollbar
     set guioptions-=R               " Remove right hand scrollbar
     set guioptions-=l               " Remove left hand scrollbar
     set guioptions-=L               " Remove left hand scrollbar when vertically split
 
-	set backspace=indent,eol,start 	" backspace for dummys
-	set linespace=0 				" No extra spaces between rows
-	set nu 							" Line numbers on
+    set backspace=indent,eol,start  " backspace for dummys
+    set linespace=0                 " No extra spaces between rows
+    set nu                          " Line numbers on
     set relativenumber              " Relative numbers on
-	set showmatch                  	" show matching brackets/parenthesis
-	set incsearch 					" find as you type search
-	set hlsearch 					" highlight search terms
-	set winminheight=0 				" windows can be 0 line high 
-	set ignorecase 					" case insensitive search
-	set smartcase 					" case sensitive when uc present
-	set wildmenu 					" show list instead of just completing
-	set wildmode=list:longest,full 	" command <Tab> completion, list matches, then longest common part, then all.
-	"set whichwrap=b,s,h,l,<,>,[,]	" backspace and cursor keys wrap to
-	set whichwrap=b,s,<,>,[,]	" backspace and cursor keys wrap to
-	set scrolljump=5 				" lines to scroll when cursor leaves screen
-	set scrolloff=3 				" minimum lines to keep above and below cursor
-	set foldenable  				" auto fold code
-	"set gdefault					" the /g flag on :s substitutions by default
+    set showmatch                   " show matching brackets/parenthesis
+    set incsearch                   " find as you type search
+    set hlsearch                    " highlight search terms
+    set winminheight=0              " windows can be 0 line high 
+    set ignorecase                  " case insensitive search
+    set smartcase                   " case sensitive when uc present
+    set wildmenu                    " show list instead of just completing
+    set wildmode=list:longest,full  " command <Tab> completion, list matches, then longest common part, then all.
+    "set whichwrap=b,s,h,l,<,>,[,]  " backspace and cursor keys wrap to
+    set whichwrap=b,s,<,>,[,]       " backspace and cursor keys wrap to
+    set scrolljump=5                " lines to scroll when cursor leaves screen
+    set scrolloff=3                 " minimum lines to keep above and below cursor
+    set foldenable                  " auto fold code
+    "set gdefault                   " the /g flag on :s substitutions by default
     
 " }
 
 " General {
-	filetype plugin indent on  	" Automatically detect file types.
-	syntax on 					" syntax highlighting
-	set mouse=a					" automatically enable mouse usage
-	"set autochdir 				" always switch to the current file directory.. 
-	" not every vim is compiled with this, use the following line instead
-    " autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-	scriptencoding utf-8
-	" set autowrite
-    set autoread                " Automatically read modified files outside of vim
-	set shortmess+=filmnrxoOtT     	" abbrev. of messages (avoids 'hit enter')
+    filetype plugin indent on       " Automatically detect file types.
+    syntax on                       " syntax highlighting
+    set mouse=a                     " automatically enable mouse usage
+    scriptencoding utf-8
+    " set autowrite
+    set autoread                    " Automatically read modified files outside of vim
+    set shortmess+=filmnrxoOtT      " abbrev. of messages (avoids 'hit enter')
 
     " Views {
         " XXX: Typically, having 'options' set in viewoptions is a bad thing
@@ -276,77 +250,70 @@ let mapleader = ","
         " XXX: It seems no matter what, the 'lcd' setting is saved regardless
         " what option is set for views
         set viewoptions=folds,cursor,unix,slash " better unix / windows compatibility
-        au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
-        au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
+        au BufWinLeave * silent! mkview   " make vim save view (state) (folds, cursor, etc)
+        au BufWinEnter * silent! loadview " make vim load view (state) (folds, cursor, etc)
     " }
 
-	" set virtualedit=onemore 	   	" allow for cursor beyond last character
-	set history=1000  				" Store a ton of history (default is 20)
-	" set spell 		 	     	" spell checking on
-    set hidden                      " buffers become hidden when navigating away and won't complain about modifications
+    " set virtualedit=onemore            " allow for cursor beyond last character
+    set history=1000                     " Store a ton of history (default is 20)
+    set hidden                           " buffers become hidden when navigating away and won't complain about modifications
     if executable('rg')
-        set grepprg=rg\ --vimgrep       " set the grep program to use ripgrep instead
+        set grepprg=rg\ --vimgrep        " set the grep program to use ripgrep instead
     endif
-	
-	" Setting up the directories {
-		set backup 						" backups are nice ...
+    
+    " Setting up the directories {
+        set backup                         " backups are nice ...
         " Moved to function at bottom of the file
-		set backupdir=$HOME/vim/backup  " but not when they clog .
-		set directory=$HOME/vim/swap	" Same for swap files
-		set viewdir=$HOME/vim/views 	" same but for view files
-		
-		"" Creating directories if they don't exist
-		"silent execute '!mkdir -p $HOME/vim/backup'
-		"silent execute '!mkdir -p $HOME/vim/swap'
-		"silent execute '!mkdir -p $HOME/vim/views'
-	" }
+        set backupdir=$HOME/vim/backup  " but not when they clog .
+        set directory=$HOME/vim/swap    " Same for swap files
+        set viewdir=$HOME/vim/views     " same but for view files
+        
+        "" Creating directories if they don't exist
+        "silent execute '!mkdir -p $HOME/vim/backup'
+        "silent execute '!mkdir -p $HOME/vim/swap'
+        "silent execute '!mkdir -p $HOME/vim/views'
+    " }
 " }
 
 " Formatting {
-	set nowrap                     	" do not wrap long lines
-	set autoindent                 	" indent at the same level of the previous line
-	set shiftwidth=4               	" use indents of 4 spaces (used for >>, <<, autoindent, etc)
-	set expandtab 	       		    " Tabs are spaces
-    set smarttab                    " Tabs are tabs after a leading tab
-	set tabstop=4 					" an indentation every four columns (# of spaces counted for tab)
-    set textwidth=79                "Auto wrap when inserting after 80 columns (self-imposed)
-	" set matchpairs+=<:>            	" match, to be used with % 
-    " set pastetoggle=<F12>          	" pastetoggle (sane indentation on pastes), unnecessary in modern terminal emulators
-	"set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
+    set nowrap                         " do not wrap long lines
+    set autoindent                     " indent at the same level of the previous line
+    set shiftwidth=4                   " use indents of 4 spaces (used for >>, <<, autoindent, etc)
+    set expandtab                      " Tabs are spaces
+    set smarttab                       " Tabs are tabs after a leading tab
+    set tabstop=4                      " an indentation every four columns (# of spaces counted for tab)
+    set textwidth=79                   " Auto wrap when inserting after 80 columns (self-imposed)
+    " set matchpairs+=<:>                " match, to be used with % 
+    " set pastetoggle=<F12>              " pastetoggle (sane indentation on pastes), unnecessary in modern terminal emulators
+    "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
 " }
 
 " Key Mappings {
 
-	" Easier moving in tabs and windows
-	map <C-J> <C-W>j<C-W>_
-	map <C-K> <C-W>k<C-W>_
-	map <C-L> <C-W>l<C-W>_
-	map <C-H> <C-W>h<C-W>_
-	map <C-K> <C-W>k<C-W>_
-	map <S-H> gT
-	map <S-L> gt
+    " Easier moving in tabs and windows
+    map <C-J> <C-W>j<C-W>_
+    map <C-K> <C-W>k<C-W>_
+    map <C-L> <C-W>l<C-W>_
+    map <C-H> <C-W>h<C-W>_
+    map <C-K> <C-W>k<C-W>_
+    map <S-H> gT
+    map <S-L> gt
 
-	" Stupid shift key fixes
-	"cmap W w
-	"cmap WQ wq
-	"cmap wQ wq
-	"cmap Q q
-	"cmap Tabe tabE
+    " Stupid shift key fixes
+    "cmap W w
+    "cmap WQ wq
+    "cmap wQ wq
+    "cmap Q q
+    "cmap Tabe tabE
 
-	" Yank from the cursor to the end of the line, to be consistent with C and D.
-	nnoremap Y y$
+    " Yank from the cursor to the end of the line, to be consistent with C and D.
+    nnoremap Y y$
 
-	" Shortcuts
-	" Change Working Directory to that of the current file
-    " cmap cwd lcd %:p:h
-
-    " Change help to open in vertical split
-    " cnoremap help vert bo help
+    " Shortcuts
 
     " Opening files and directories from current path
-    cmap %/ <C-R>=expand("%:p:h")."/"<cr>
-    map <leader>e :e %/
-    map <leader>cd :cd %/
+    map <leader>e :e <C-R>=expand("%:p:h")."/"<cr>
+    map <leader>cd :cd <C-R>=expand("%:p:h")."/"<cr>
 
     " Center on next function after switching
     map ]] ]]zz
@@ -427,7 +394,7 @@ endfunction
         " Use smartcase.
         let g:deoplete#enable_smart_case = 1
 
-        " #|TermOpen|		when a terminal buffer is starting
+        " #|TermOpen|        when a terminal buffer is starting
         " TODO: Fix this
         augroup neovimrc
             " Remove all neovimrc autocmds (useful when resourcing)
@@ -439,9 +406,9 @@ endfunction
         
         set termguicolors
         " set guicursor=a
-		" set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-		"   \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-		"   \,sm:block-blinkwait175-blinkoff150-blinkon175
+        " set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+        "   \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+        "   \,sm:block-blinkwait175-blinkoff150-blinkon175
         " set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
         " au VimLeave * set guicursor=a:block-blinkon0
         set inccommand=nosplit
