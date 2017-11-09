@@ -101,6 +101,8 @@ behave mswin
     " SCM {
         " Mercurial integration
         Plug 'ludovicchabant/vim-lawrencium'
+        " Git integration
+        Plug 'tpope/vim-fugitive'
     " }
 
     " Language {
@@ -274,8 +276,8 @@ let mapleader = ","
         " XXX: It seems no matter what, the 'lcd' setting is saved regardless
         " what option is set for views
         set viewoptions=folds,cursor,unix,slash " better unix / windows compatibility
-        " au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
-        " au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
+        au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
+        au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
     " }
 
 	" set virtualedit=onemore 	   	" allow for cursor beyond last character
@@ -308,8 +310,8 @@ let mapleader = ","
     set smarttab                    " Tabs are tabs after a leading tab
 	set tabstop=4 					" an indentation every four columns (# of spaces counted for tab)
     set textwidth=79                "Auto wrap when inserting after 80 columns (self-imposed)
-	"set matchpairs+=<:>            	" match, to be used with % 
-	set pastetoggle=<F12>          	" pastetoggle (sane indentation on pastes)
+	" set matchpairs+=<:>            	" match, to be used with % 
+    " set pastetoggle=<F12>          	" pastetoggle (sane indentation on pastes), unnecessary in modern terminal emulators
 	"set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
 " }
 
@@ -355,7 +357,7 @@ let mapleader = ","
     map # #Nzz
 
     " Remove highlighting with a backspace
-    nmap <BS> :nohl<CR>
+    " nmap <BS> :nohl<CR> "use =oh from unimpaired instead
 
     " Diff between veritcally split windows
     nmap <leader>d :let @q = expand('%:p')<cr><C-w>c<C-w>p:vert diffsplit <C-r>q<cr>
@@ -440,6 +442,8 @@ endfunction
 		" set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 		"   \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 		"   \,sm:block-blinkwait175-blinkoff150-blinkon175
+        " set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+        " au VimLeave * set guicursor=a:block-blinkon0
         set inccommand=nosplit
     endif 
 " }
