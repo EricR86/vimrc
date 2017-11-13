@@ -15,11 +15,6 @@ behave mswin
 
     " General {
         
-        " Async completion
-        " TODO: Only enable for Neovim?
-        " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-        Plug 'roxma/nvim-completion-manager'
-
         " Language server protocol framework support
         Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 
@@ -92,6 +87,7 @@ behave mswin
         Plug 'tpope/vim-commentary'
 
         " General language autocompletion
+        " Plug 'roxma/nvim-completion-manager'
         Plug 'shougo/deoplete.nvim'
         " Add syntax files as a deoplete completion source
         Plug 'shougo/neco-syntax'
