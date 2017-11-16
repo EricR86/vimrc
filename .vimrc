@@ -92,9 +92,10 @@ behave mswin
         " Add syntax files as a deoplete completion source
         Plug 'shougo/neco-syntax'
         " Python auto completion
-        Plug 'davidhalter/jedi'
+        " Plug 'davidhalter/jedi'
         " Python auto completion with deoplete
-        Plug 'zchee/deoplete-jedi'
+        " Plug 'zchee/deoplete-jedi'
+        " Use python language server (pyls) instead
 
         " Syntax and filetype plugins for most languages
         Plug 'sheerun/vim-polyglot'
@@ -133,12 +134,24 @@ behave mswin
         " TODO: Fix this to append only the cwd?
         let g:airline_section_b = '%{getcwd()}'
     " }
-
     " FZF {
         " Redefine the Find command to use rg and options
         if executable('rg')
             command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --follow --color "always" '.shellescape(<q-args>), 1, <bang>0)
         endif
+    " }
+    " Language Client {
+        let g:LanguageClient_autoStart = 1
+
+        let g:LanguageClient_serverCommands = {
+            \ 'python': ['pyls'],
+            \ }
+
+        nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+        nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+        nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+        nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
+        nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
     " }
 " }
 
@@ -387,8 +400,10 @@ endfunction
     if has("nvim")
         " Use deoplete.
         let g:deoplete#enable_at_startup = 1
-        " Use smartcase.
+        " Use deoplete smartcase.
         let g:deoplete#enable_smart_case = 1
+        " deoplete <BS>: close popup and delete backword char.
+        inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 
         " #|TermOpen|        when a terminal buffer is starting
         " TODO: Fix this
