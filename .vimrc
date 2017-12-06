@@ -147,11 +147,21 @@ behave mswin
             \ 'python': ['pyls'],
             \ }
 
+        " Pause 2 seconds between textDocument_didChange events
+        let g:LanguageClient_changeThrottle = 2
+        let g:LanguageClient_diagnosticsList = "quickfix"
+        let g:LanguageClient_diagnosticsEnable = 1
+        
+
         nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
         nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
         nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
         nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
         nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
+        " set formatexpr=LanguageClient_textDocument_rangeFormatting()
+    " }
+    " Polyglot {
+        let g:polyglot_disabled = ['python']
     " }
 " }
 
@@ -166,7 +176,7 @@ let mapleader = ","
     endif
 
     " Map opening the .vimrc
-    exec "nmap <leader>` :e " . expand("<sfile>:p") . "<CR>"
+    exec "nnoremap <leader>` :e " . expand("<sfile>:p") . "<CR>"
 " }
 
 " Vim UI {
@@ -288,6 +298,7 @@ let mapleader = ","
     set nowrap                         " do not wrap long lines
     set autoindent                     " indent at the same level of the previous line
     set shiftwidth=4                   " use indents of 4 spaces (used for >>, <<, autoindent, etc)
+    set shiftround                     " always round to next shiftwidth when using >>, tab, etc
     set expandtab                      " Tabs are spaces
     set smarttab                       " Tabs are tabs after a leading tab
     set tabstop=4                      " an indentation every four columns (# of spaces counted for tab)
@@ -300,13 +311,13 @@ let mapleader = ","
 " Key Mappings {
 
     " Easier moving in tabs and windows
-    map <C-J> <C-W>j<C-W>_
-    map <C-K> <C-W>k<C-W>_
-    map <C-L> <C-W>l<C-W>_
-    map <C-H> <C-W>h<C-W>_
-    map <C-K> <C-W>k<C-W>_
-    map <S-H> gT
-    map <S-L> gt
+    nnoremap <C-J> <C-W>j<C-W>_
+    nnoremap <C-K> <C-W>k<C-W>_
+    nnoremap <C-L> <C-W>l<C-W>_
+    nnoremap <C-H> <C-W>h<C-W>_
+    nnoremap <C-K> <C-W>k<C-W>_
+    nnoremap <S-H> gT
+    nnoremap <S-L> gt
 
     " Stupid shift key fixes
     "cmap W w
@@ -321,26 +332,26 @@ let mapleader = ","
     " Shortcuts
 
     " Opening files and directories from current path
-    map <leader>e :e <C-R>=expand("%:p:h")."/"<cr>
-    map <leader>cd :cd <C-R>=expand("%:p:h")."/"<cr>
+    nnoremap <leader>e :e <C-R>=expand("%:p:h")."/"<cr>
+    nnoremap <leader>cd :cd <C-R>=expand("%:p:h")."/"<cr>
 
     " Center on next function after switching
-    map ]] ]]zz
-    map [[ [[zz
+    nnoremap ]] ]]zz
+    nnoremap [[ [[zz
 
     " Keep cursor on '*'ed item
-    map * *Nzz
-    map # #Nzz
+    nnoremap * *Nzz
+    nnoremap # #Nzz
 
     " Remove highlighting with a backspace
     " nmap <BS> :nohl<CR> "use =oh from unimpaired instead
 
     " Diff between veritcally split windows
-    nmap <leader>d :let @q = expand('%:p')<cr><C-w>c<C-w>p:vert diffsplit <C-r>q<cr>
-    nmap <leader>D :diffoff!<cr>
+    nnoremap <leader>d :let @q = expand('%:p')<cr><C-w>c<C-w>p:vert diffsplit <C-r>q<cr>
+    nnoremap <leader>D :diffoff!<cr>
 
     " Maximize current working window
-    map <leader>m <C-w>_<C-w>\|
+    nnoremap <leader>m <C-w>_<C-w>\|
 
     "Map for quick replacement
     " nmap ;; :%s//g<left><left>
@@ -349,7 +360,7 @@ let mapleader = ","
     " vmap ;' :s//gc<left><left><left>
 
     " Open temporary file
-    map <leader>t :exe "e " . tempname()<cr>
+    nnoremap <leader>t :exe "e " . tempname()<cr>
 " }
 
 " Hex Editing {
