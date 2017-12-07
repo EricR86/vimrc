@@ -118,7 +118,10 @@ behave mswin
 " Plugin Settings and Bindings {
     " NERDTree {
     " close VIM if NERDTree is the only buffer left
-    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    augroup nerdtree
+        autocmd!
+        autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    augroup END
     " toggle NERDTree
     nnoremap <silent> <F2> :NERDTreeToggle<CR>
     " }
@@ -172,7 +175,12 @@ let mapleader = ","
 " Quick .vimrc updating {
     " Source the vimrc file after saving it
     if has("autocmd")
-      exec "autocmd bufwritepost " . expand("<sfile>:t") . " source $MYVIMRC"
+        " Prevent repeating autocommands
+        augroup vimrc
+            " Clear group before a re-source
+            autocmd!
+            exec "autocmd bufwritepost " . expand("<sfile>:t") . " source $MYVIMRC"
+        augroup END
     endif
 
     " Map opening the .vimrc
