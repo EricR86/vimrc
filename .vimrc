@@ -361,6 +361,29 @@ let mapleader = ","
     " Maximize current working window
     nnoremap <leader>m <C-w>_<C-w>\|
 
+    " Search for selected word (default recursive in rg/ag)
+    " Add shellescaping and word boundaries (like '*' but across files)
+    " nnoremap <leader>g :silent execute "grep! " . shellescape('\b' . expand("<cWORD>") . '\b')<cr>:copen<cr>
+    nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
+    vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
+
+    function! s:GrepOperator(type)
+        let saved_unnamed_register = @@
+
+        if a:type ==# 'v'
+            normal! `<v`>y
+        elseif a:type ==# 'char'
+            normal! `[y`]
+        else
+            return
+        endif
+
+        silent execute "grep! " . shellescape('\b' . @@ . '\b')
+        copen
+
+        let @@ = saved_unnamed_register
+    endfunction
+
     "Map for quick replacement
     " nmap ;; :%s//g<left><left>
     " nmap ;' :%s//gc<left><left><left>
@@ -368,7 +391,7 @@ let mapleader = ","
     " vmap ;' :s//gc<left><left><left>
 
     " Open temporary file
-    nnoremap <leader>t :exe "e " . tempname()<cr>
+    nnoremap <leader>t :silent exe "e " . tempname()<cr>
 " }
 
 " Hex Editing {
