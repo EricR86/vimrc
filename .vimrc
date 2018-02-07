@@ -55,7 +55,7 @@ behave mswin
         Plug 'junegunn/fzf.vim'
     " }
 
-    " Color scheme {
+    " Color scheme { 
         " Plug 'tomasr/molokai'
         
         " Color scheme (tailored for neovim)
@@ -327,6 +327,9 @@ let mapleader = ","
     nnoremap <S-H> gT
     nnoremap <S-L> gt
 
+    nnoremap <C-W>D :silent! exe "confirm bdelete"<cr>
+    " nnoremap <leader>t :silent! exe "e " . tempname()<cr>
+
     " Stupid shift key fixes
     "cmap W w
     "cmap WQ wq
@@ -391,7 +394,15 @@ let mapleader = ","
     " vmap ;' :s//gc<left><left><left>
 
     " Open temporary file
-    nnoremap <leader>t :silent exe "e " . tempname()<cr>
+    function! s:OpenTemporaryBuffer()
+        " prepending silent messes this up?
+        execute "edit " . tempname()
+        setlocal buftype=nofile
+        setlocal bufhidden=delete
+        setlocal noswapfile
+    endfunction
+    nnoremap <leader>t :<c-u>call <SID>OpenTemporaryBuffer()<cr>
+    " nnoremap <leader>t :silent! exe "e " . tempname()<cr>
 " }
 
 " Hex Editing {
