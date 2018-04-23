@@ -14,9 +14,13 @@ behave mswin
     call plug#begin('~/.vim/plugged')
 
     " General {
-        
+    
         " Language server protocol framework support
-        Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+        " Currently bugged
+        " Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+
+        " Connect to ghost text chrome/ff extension to edit text in nvim
+        Plug 'raghur/vim-ghost', {'do': ':GhostInstall'}
 
         " Change surrounding or make surrounds with cs or ys respectively
         Plug 'tpope/vim-surround'
@@ -44,6 +48,9 @@ behave mswin
     
         " Lightweight statusline enhancement
         Plug 'vim-airline/vim-airline'
+
+        " Vertical lines to show vertical alignment
+        Plug 'Yggdroot/indentLine'
 
     " }
     
@@ -86,19 +93,19 @@ behave mswin
         " Plug 'tomtom/tcomment_vim'
         Plug 'tpope/vim-commentary'
 
+        " Syntax and filetype plugins for most languages
+        Plug 'sheerun/vim-polyglot'
+
         " General language autocompletion
         " Plug 'roxma/nvim-completion-manager'
         Plug 'shougo/deoplete.nvim'
         " Add syntax files as a deoplete completion source
         Plug 'shougo/neco-syntax'
         " Python auto completion
-        " Plug 'davidhalter/jedi'
+        Plug 'davidhalter/jedi'
         " Python auto completion with deoplete
-        " Plug 'zchee/deoplete-jedi'
-        " Use python language server (pyls) instead
-
-        " Syntax and filetype plugins for most languages
-        Plug 'sheerun/vim-polyglot'
+        Plug 'zchee/deoplete-jedi'
+        " Use python language server (pyls) instead ? NB: bugged right now
 
         " Display function signatures in the command line
         Plug 'Shougo/echodoc.vim'
@@ -144,24 +151,24 @@ behave mswin
         endif
     " }
     " Language Client {
-        let g:LanguageClient_autoStart = 1
+        " let g:LanguageClient_autoStart = 1
 
-        let g:LanguageClient_serverCommands = {
-            \ 'python': ['pyls'],
-            \ }
+        " let g:LanguageClient_serverCommands = {
+        "     \ 'python': ['pyls'],
+        "     \ }
 
         " Pause 2 seconds between textDocument_didChange events
-        let g:LanguageClient_changeThrottle = 2
-        let g:LanguageClient_diagnosticsList = "quickfix"
-        let g:LanguageClient_diagnosticsEnable = 1
+        " let g:LanguageClient_changeThrottle = 2
+        " let g:LanguageClient_diagnosticsList = "quickfix"
+        " let g:LanguageClient_diagnosticsEnable = 1
         
 
-        nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-        nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-        nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-        nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
-        nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
-        " set formatexpr=LanguageClient_textDocument_rangeFormatting()
+        " nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+        " nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+        " nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+        " nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
+        " nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
+        " " set formatexpr=LanguageClient_textDocument_rangeFormatting()
     " }
     " Polyglot {
         let g:polyglot_disabled = ['python']
@@ -210,7 +217,7 @@ let mapleader = ","
     set tabpagemax=15               " only show 15 tabs
     set showmode                    " display the current mode
 
-    set cursorline                  " highlight current line
+    " set cursorline                  " highlight current line
 
     hi CursorLine guibg=#ffffff     " highlight bg color of current line
     hi CursorColumn guibg=#333333   " highlight cursor
@@ -458,7 +465,6 @@ endfunction
         " deoplete <BS>: close popup and delete backword char.
         inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
 
-        " #|TermOpen|        when a terminal buffer is starting
         " TODO: Fix this
         augroup neovimrc
             " Remove all neovimrc autocmds (useful when resourcing)
@@ -466,6 +472,26 @@ endfunction
             " Remove line numbers from terminal buffers
             autocmd TermOpen * setlocal nonumber
             autocmd TermOpen * setlocal norelativenumber
+
+            " When leaving the terminal
+            " autocmd VimEnter * if !empty($NVIM_LISTEN_ADDRESS) && $NVIM_LISTEN_ADDRESS !=# v:servername
+    "       \ |let g:r=jobstart(['nc', '-U', $NVIM_LISTEN_ADDRESS],{'rpc':v:true})
+    "       \ |let g:f=fnameescape(expand('%:p'))
+    "       \ |noau bwipe
+    "       \ |call rpcrequest(g:r, "nvim_command", "tabedit ".g:f)|qa|endif
+
+            " function! s:SendCheckTimeToParent()
+            "     " Use on BufLeave
+            "     if !empty($NVIM_LISTEN_ADDRESS) && (&buftype ==# "terminal")
+            "         let rpcsocket = sockconnect('pipe', $NVIM_LISTEN_ADDRESS, {'rpc':v:true})
+            "         call rpcrequest(rpcsocket, 'nvim_command', 'checktime')
+            "         call chanclose(rpcsocket, 'rpc')
+            "     endif
+            " endfunction
+
+            " autocmd BufLeave * call <SID>SendCheckTimeToParent()
+            autocmd BufLeave * if &buftype ==# 'terminal' | checktime | endif
+            
         augroup END
         
         set termguicolors
