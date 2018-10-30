@@ -238,7 +238,11 @@ let mapleader = ","
     "    set statusline=%<%f\ %=\:\b%n%y%m%r%w\ %l,%c%V\ %P " a statusline, also on steroids
     "    "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
     "endif
-
+    
+    " Remove current mode display - should be shown in the status line anyway
+    " (e.g. airline)
+    set noshowmode
+    
     " Remove GUI menus
     set guioptions-=T               " Remove Toolbar
     "set guioptions-=m              " Remove Menu
