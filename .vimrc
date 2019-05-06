@@ -15,10 +15,6 @@ behave mswin
 
     " General {
     
-        " Language server protocol framework support
-        " Currently bugged
-        " Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-
         " Connect to ghost text chrome/ff extension to edit text in nvim
         Plug 'raghur/vim-ghost', {'do': ':GhostInstall'}
 
@@ -83,33 +79,39 @@ behave mswin
     " }
 
     " Language {
-        " Syntax checker plugin
-        " Plug 'scrooloose/syntastic'
-
         " Asyncrhonous lint checking
-        Plug 'w0rp/ale'
+        " Plug 'w0rp/ale'
+        Plug 'neomake/neomake'
 
         " Use gc to toggle areas to comment
         " Plug 'tomtom/tcomment_vim'
         Plug 'tpope/vim-commentary'
 
-        " Syntax and filetype plugins for most languages
-        Plug 'sheerun/vim-polyglot'
+        " Better syntax for markdown? 
+        " Plug 'plasticboy/vim-markdown'
+
+        " Language server integration (works with deoplete)
+        Plug 'autozimu/LanguageClient-neovim', {
+           \ 'branch': 'next',
+           \ 'do': 'bash install.sh',
+           \ }
 
         " General language autocompletion
-        " Plug 'roxma/nvim-completion-manager'
         Plug 'shougo/deoplete.nvim'
         " Add syntax files as a deoplete completion source
         Plug 'shougo/neco-syntax'
         " Python auto completion
-        Plug 'davidhalter/jedi'
+        " Plug 'davidhalter/jedi'
         " Python auto completion with deoplete
         Plug 'zchee/deoplete-jedi'
-        " Use python language server (pyls) instead ? NB: bugged right now
+        " Use python language server (pyls) instead ? XXX: TODO
+        
+        " Add rust as a deoplete completion source
+        Plug 'racer-rust/vim-racer'
 
         " Display function signatures in the command line
         Plug 'Shougo/echodoc.vim'
-        
+
         " Use tab for smarter autocompletion
         " Plug 'SuperTab' " Works on windows
         
@@ -117,6 +119,10 @@ behave mswin
         " Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
         " Write HTML easier <C-y>,
         Plug 'mattn/emmet-vim'
+
+        " Bioinformatics formats highlighting
+        " This forces it's OWN colorscheme (wtf)
+        " Plug 'bioSyntax/bioSyntax-vim'
     " }
 
     call plug#end()
@@ -137,12 +143,12 @@ behave mswin
         let g:netrw_altv=1 " split right instead of left
     " }
     " Airline {
-        let g:airline#extensions#branch#enabled = 1
+        " let g:airline#extensions#branch#enabled = 1
         " let g:airline#extensions#syntastic#enabled = 1
         " let g:airline#extensions#ycm#enabled = 1
-        let g:airline#extensions#ale#enabled = 1
+        " let g:airline#extensions#ale#enabled = 1
         " TODO: Fix this to append only the cwd?
-        let g:airline_section_b = '%{getcwd()}'
+        " let g:airline_section_b = '%{getcwd()}'
     " }
     " FZF {
         " Redefine the Find command to use rg and options
@@ -151,27 +157,34 @@ behave mswin
         endif
     " }
     " Language Client {
-        " let g:LanguageClient_autoStart = 1
+        let g:LanguageClient_serverCommands = {
+            \ 'rust': ['rls'],
+            \ 'python': ['pyls'],
+            \ }
 
-        " let g:LanguageClient_serverCommands = {
-        "     \ 'python': ['pyls'],
-        "     \ }
-
-        " Pause 2 seconds between textDocument_didChange events
-        " let g:LanguageClient_changeThrottle = 2
-        " let g:LanguageClient_diagnosticsList = "quickfix"
-        " let g:LanguageClient_diagnosticsEnable = 1
-        
-
-        " nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-        " nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-        " nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-        " nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
-        " nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
+        nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+        nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+        nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+        nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
+        nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
         " " set formatexpr=LanguageClient_textDocument_rangeFormatting()
     " }
-    " Polyglot {
-        let g:polyglot_disabled = ['python']
+    " " Polyglot {
+    "     let g:polyglot_disabled = ['python']
+    " " }
+    " Neomake {
+        call neomake#configure#automake('nw', 750)
+    " }
+    " Deoplete {
+        " Use deoplete.
+        let g:deoplete#enable_at_startup = 1
+        " Use deoplete smartcase.
+        call deoplete#custom#option('smart_case', v:true)
+        " Min pattern length necessary to start autocompletion is set to one
+		call deoplete#custom#option('min_pattern_length', 1)
+        " deoplete <BS>: close popup and delete backword char.
+        inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
+
     " }
 " }
 
@@ -462,13 +475,6 @@ endfunction
 
 " Neovim specific settings {
     if has("nvim")
-        " Use deoplete.
-        let g:deoplete#enable_at_startup = 1
-        " Use deoplete smartcase.
-        let g:deoplete#enable_smart_case = 1
-        " deoplete <BS>: close popup and delete backword char.
-        inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
-
         " TODO: Fix this
         augroup neovimrc
             " Remove all neovimrc autocmds (useful when resourcing)
