@@ -73,47 +73,42 @@ behave mswin
 
     " SCM {
         " Mercurial integration
-        Plug 'ludovicchabant/vim-lawrencium'
+        " Plug 'ludovicchabant/vim-lawrencium'
         " Git integration
         Plug 'tpope/vim-fugitive'
     " }
 
     " Language {
-        " Asyncrhonous lint checking
-        " Plug 'w0rp/ale'
-        Plug 'neomake/neomake'
-
         " Use gc to toggle areas to comment
         " Plug 'tomtom/tcomment_vim'
         Plug 'tpope/vim-commentary'
 
-        " Better syntax for markdown? 
-        " Plug 'plasticboy/vim-markdown'
-
-        " Language server integration (works with deoplete)
-        Plug 'autozimu/LanguageClient-neovim', {
-           \ 'branch': 'next',
-           \ 'do': 'bash install.sh',
-           \ }
-
-        " General language autocompletion
-        Plug 'shougo/deoplete.nvim'
-        " Add syntax files as a deoplete completion source
-        Plug 'shougo/neco-syntax'
-        " Python auto completion
-        " Plug 'davidhalter/jedi'
-        " Python auto completion with deoplete
-        Plug 'zchee/deoplete-jedi'
-        " Use python language server (pyls) instead ? XXX: TODO
+        " Use Conqueror of Completion for language server support with MS
+        " extensions
+        " Plug 'neoclide/coc.nvim', {'branch': 'release'}
         
-        " Add rust as a deoplete completion source
-        Plug 'racer-rust/vim-racer'
+        " Use builtin language server in neovim with helpful plugin
+        Plug 'neovim/nvim-lsp'
+        
+        "" General language autocompletion
+        "Plug 'shougo/deoplete.nvim'
+        "" Add syntax files as a deoplete completion source
+        "Plug 'shougo/neco-syntax'
+        "" Python auto completion
+        "" Plug 'davidhalter/jedi'
+        "" Python auto completion with deoplete
+        "Plug 'zchee/deoplete-jedi'
+        "" Use python language server (pyls) instead ? XXX: TODO
+        "
+        "" Add rust as a deoplete completion source
+        "Plug 'racer-rust/vim-racer'
 
-        " Display function signatures in the command line
-        Plug 'Shougo/echodoc.vim'
+        "" Display function signatures in the command line
+        "Plug 'Shougo/echodoc.vim'
 
         " Use tab for smarter autocompletion
         " Plug 'SuperTab' " Works on windows
+        Plug 'ervandew/supertab'
         
         " Write HTML easier <C-e>,
         " Plug 'rstacruz/sparkup', {'rtp': 'vim', 'for': 'html'}
@@ -128,7 +123,7 @@ behave mswin
     call plug#end()
 " }
 
-" Plugin Settings and Bindings {
+"  Plugin Settings and Bindings {
     " NERDTree {
     " close VIM if NERDTree is the only buffer left
     augroup nerdtree
@@ -156,35 +151,115 @@ behave mswin
             command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --follow --color "always" '.shellescape(<q-args>), 1, <bang>0)
         endif
     " }
-    " Language Client {
-        let g:LanguageClient_serverCommands = {
-            \ 'rust': ['rls'],
-            \ 'python': ['pyls'],
-            \ }
+    " Conqueror of Code (Language Client) {
+        "" A lot of these are recommendations for defaults / quick start
+        "" Command line height - used to skip a lot of 'hit enter to continue'
+        "set cmdheight=2
 
-        nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-        nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-        nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-        nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
-        nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
+        "" Time to trigger CursorHold event (and save swap file)
+        "set updatetime=300
+
+        "" don't give |ins-completion-menu| messages.
+        "set shortmess+=c
+
+        "" always show signcolumns
+        "set signcolumn=yes
+
+        "" TODO: https://github.com/neoclide/coc.nvim
+        "function! s:check_back_space() abort
+        "let col = col('.') - 1
+        "return !col || getline('.')[col - 1]  =~ '\s'
+        "endfunction
+
+        "" Map Tab to trigger autocompletion and cycle through options
+        "inoremap <silent><expr> <TAB>
+        "    \ pumvisible() ? "\<C-n>" :
+        "    \ <SID>check_back_space() ? "\<TAB>" :
+        "    \ coc#refresh()
+
+        "" Confirm completion and format
+        "inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+        "            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+        "" Use `[g` and `]g` to navigate diagnostics
+        "nmap <silent> [g <Plug>(coc-diagnostic-prev)
+        "nmap <silent> ]g <Plug>(coc-diagnostic-next)
+        
+        "" Remap keys for gotos
+        "nmap <silent> gd <Plug>(coc-definition)
+        "nmap <silent> gy <Plug>(coc-type-definition)
+        "nmap <silent> gi <Plug>(coc-implementation)
+        "nmap <silent> gr <Plug>(coc-references)
+        
+        "" Use K to show documentation in preview window
+        "nnoremap <silent> K :call <SID>show_documentation()<CR>
+        
+        "function! s:show_documentation()
+        "  if (index(['vim','help'], &filetype) >= 0)
+        "      execute 'h '.expand('<cword>')
+        "   else
+        "       call CocAction('doHover')
+        "   endif
+        "endfunction
+        
+        "" Highlight symbol under cursor on CursorHold
+        "" autocmd CursorHold * silent call CocActionAsync('highlight')
+        
+        ""Remap for rename current word
+        "nmap <leader>rn <Plug>(coc-rename)
+        
+        "" Remap for format selected region
+        "xmap <leader>f  <Plug>(coc-format-selected)
+        "nmap <leader>f  <Plug>(coc-format-selected)
+
+        "" Create mappings for function text object, requires document symbols
+        "" feature of languageserver.
+        "xmap if <Plug>(coc-funcobj-i)
+        "xmap af <Plug>(coc-funcobj-a)
+        "omap if <Plug>(coc-funcobj-i)
+        "omap af <Plug>(coc-funcobj-a)
+        
+        "" Use <C-d> for select selections ranges, needs server support, like:
+        "" coc-tsserver, coc-python
+        "nmap <silent> <C-d> <Plug>(coc-range-select)
+        "xmap <silent> <C-d> <Plug>(coc-range-select)
+    " }
+    " Language Client {
+        " let g:LanguageClient_serverCommands = {
+        "     \ 'rust': ['rls'],
+        "     \ 'python': ['pyls'],
+        "     \ }
+        " nnoremap <silent> <F5> :call LanguageClient_contextMenu()<CR>
+        " nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+        " nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+        " nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+        " nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<CR>
+        " nnoremap <silent> gq :call LanguageClient_textDocument_formatting()<CR>
         " " set formatexpr=LanguageClient_textDocument_rangeFormatting()
     " }
-    " " Polyglot {
-    "     let g:polyglot_disabled = ['python']
-    " " }
-    " Neomake {
-        call neomake#configure#automake('nw', 750)
-    " }
-    " Deoplete {
-        " Use deoplete.
-        let g:deoplete#enable_at_startup = 1
-        " Use deoplete smartcase.
-        call deoplete#custom#option('smart_case', v:true)
-        " Min pattern length necessary to start autocompletion is set to one
-		call deoplete#custom#option('min_pattern_length', 1)
-        " deoplete <BS>: close popup and delete backword char.
-        inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
+    " Neovim LSP Plugin Settings {
+lua << EOF
+local nvim_lsp = require 'nvim_lsp'
+nvim_lsp.rls.setup{}
+nvim_lsp.pyls.setup{}
+EOF
 
+        " Not part of the plugin but from neovim itself
+        nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+        " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+        nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+        nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+        nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+        nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+        nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+
+        " Use LSP omni-completion in Python files.
+        autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+        " Use LSP omni-completion in Rust files.
+        autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    " }
+    " SuperTab {
+    let g:SuperTabDefaultCompletionType = "context"
     " }
 " }
 
@@ -354,13 +429,6 @@ let mapleader = ","
     nnoremap <C-W>D :silent! exe "confirm bdelete"<cr>
     " nnoremap <leader>t :silent! exe "e " . tempname()<cr>
 
-    " Stupid shift key fixes
-    "cmap W w
-    "cmap WQ wq
-    "cmap wQ wq
-    "cmap Q q
-    "cmap Tabe tabE
-
     " Yank from the cursor to the end of the line, to be consistent with C and D.
     nnoremap Y y$
 
@@ -410,12 +478,6 @@ let mapleader = ","
 
         let @@ = saved_unnamed_register
     endfunction
-
-    "Map for quick replacement
-    " nmap ;; :%s//g<left><left>
-    " nmap ;' :%s//gc<left><left><left>
-    " vmap ;; :s//g<left><left>
-    " vmap ;' :s//gc<left><left><left>
 
     " Open temporary file
     function! s:OpenTemporaryBuffer()
@@ -483,34 +545,11 @@ endfunction
             autocmd TermOpen * setlocal nonumber
             autocmd TermOpen * setlocal norelativenumber
 
-            " When leaving the terminal
-            " autocmd VimEnter * if !empty($NVIM_LISTEN_ADDRESS) && $NVIM_LISTEN_ADDRESS !=# v:servername
-    "       \ |let g:r=jobstart(['nc', '-U', $NVIM_LISTEN_ADDRESS],{'rpc':v:true})
-    "       \ |let g:f=fnameescape(expand('%:p'))
-    "       \ |noau bwipe
-    "       \ |call rpcrequest(g:r, "nvim_command", "tabedit ".g:f)|qa|endif
-
-            " function! s:SendCheckTimeToParent()
-            "     " Use on BufLeave
-            "     if !empty($NVIM_LISTEN_ADDRESS) && (&buftype ==# "terminal")
-            "         let rpcsocket = sockconnect('pipe', $NVIM_LISTEN_ADDRESS, {'rpc':v:true})
-            "         call rpcrequest(rpcsocket, 'nvim_command', 'checktime')
-            "         call chanclose(rpcsocket, 'rpc')
-            "     endif
-            " endfunction
-
-            " autocmd BufLeave * call <SID>SendCheckTimeToParent()
             autocmd BufLeave * if &buftype ==# 'terminal' | checktime | endif
             
         augroup END
         
         set termguicolors
-        " set guicursor=a
-        " set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-        "   \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-        "   \,sm:block-blinkwait175-blinkoff150-blinkon175
-        " set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-        " au VimLeave * set guicursor=a:block-blinkon0
         set inccommand=nosplit
 
         if has("win32")
